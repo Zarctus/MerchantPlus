@@ -42,3 +42,7 @@ L["OPTIONS_TITLE_MAIN"] = "%s 주요 설정"
 L["OPTIONS_TITLE_SORT_REMEMBER"] = "정렬 순서 기억하기"
 L["OPTIONS_TITLE_TAB_DEFAULT"] = "%s 탭을 기본적으로 보여주기"
 L["OPTIONS_TITLE_WINDOW_WIDTH"] = "상인 창 가로 폭"
+
+L["FILTER_TOOLTIP_AVAILABLE"] = "Show only items you can purchase right now."
+L["FILTER_TOOLTIP_COLLECTABLE"] = "Show only items you can add to your collection."
+L["FILTER_TOOLTIP_USABLE"] = "Show only items that this character can use or learn."

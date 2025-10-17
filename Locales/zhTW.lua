@@ -44,3 +44,7 @@ L["OPTIONS_TITLE_MAIN"] = "%s 主選項"
 L["OPTIONS_TITLE_SORT_REMEMBER"] = "記住排序方式"
 L["OPTIONS_TITLE_TAB_DEFAULT"] = "預設顯示 %s 分頁"
 L["OPTIONS_TITLE_WINDOW_WIDTH"] = "商家視窗寬度"
+
+L["FILTER_TOOLTIP_AVAILABLE"] = "Show only items you can purchase right now."
+L["FILTER_TOOLTIP_COLLECTABLE"] = "Show only items you can add to your collection."
+L["FILTER_TOOLTIP_USABLE"] = "Show only items that this character can use or learn."

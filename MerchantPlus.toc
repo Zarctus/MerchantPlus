@@ -1,5 +1,5 @@
 ## Interface: 110205, 110200
-## Version: @project-version@
+## Version: 11.2.5.0
 ## Title: Merchant Plus
 ## Notes: A Modern Scrollable UI for Merchants
 ## Notes-koKR: 현대적으로 스크롤되는 상인 UI

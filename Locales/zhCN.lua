@@ -40,3 +40,7 @@ L["OPTIONS_TITLE_COLUMNS"] = "显示栏位"
 L["OPTIONS_TITLE_MAIN"] = "%s 主选项"
 L["OPTIONS_TITLE_SORT_REMEMBER"] = "记住排序方向"
 L["OPTIONS_TITLE_TAB_DEFAULT"] = "默认显示 %s 分页"
+
+L["FILTER_TOOLTIP_AVAILABLE"] = "Show only items you can purchase right now."
+L["FILTER_TOOLTIP_COLLECTABLE"] = "Show only items you can add to your collection."
+L["FILTER_TOOLTIP_USABLE"] = "Show only items that this character can use or learn."

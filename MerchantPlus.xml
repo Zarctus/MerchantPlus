@@ -8,6 +8,14 @@
 	<Script file="MerchantPlusTable.lua" />
 	<Script file="MerchantPlusItemList.lua" />
 	<Script file="MerchantPlusItemListLine.lua" />
+	<CheckButton name="MerchantPlusFilterButtonTemplate" inherits="UICheckButtonTemplate" mixin="MerchantPlusFilterButtonMixin" virtual="true">
+		<Scripts>
+			<OnLoad method="OnLoad" />
+			<OnClick method="OnClick" />
+			<OnEnter method="OnEnter" />
+			<OnLeave method="OnLeave" />
+		</Scripts>
+	</CheckButton>
 	<Frame name="MerchantPlusFrame" parent="MerchantFrame" mixin="MerchantPlusFrameMixin" hidden="true">
 		<Anchors>
 			<Anchor point="TOPLEFT" x="0" y="-62" />
@@ -24,9 +32,35 @@
 			</Layer>
 		</Layers>
 		<Frames>
+			<Frame parentKey="FilterBar" mixin="MerchantPlusFilterBarMixin">
+				<Size x="360" y="24" />
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-28" y="-6" />
+				</Anchors>
+				<Frames>
+					<CheckButton parentKey="Usable" inherits="MerchantPlusFilterButtonTemplate">
+						<KeyValues>
+							<KeyValue key="filterKey" value="usable" type="string" />
+						</KeyValues>
+					</CheckButton>
+					<CheckButton parentKey="Collectable" inherits="MerchantPlusFilterButtonTemplate">
+						<KeyValues>
+							<KeyValue key="filterKey" value="collectable" type="string" />
+						</KeyValues>
+					</CheckButton>
+					<CheckButton parentKey="Available" inherits="MerchantPlusFilterButtonTemplate">
+						<KeyValues>
+							<KeyValue key="filterKey" value="available" type="string" />
+						</KeyValues>
+					</CheckButton>
+				</Frames>
+				<Scripts>
+					<OnLoad method="OnLoad" />
+				</Scripts>
+			</Frame>
 			<Frame name="MerchantPlusItemList" mixin="MerchantPlusItemListMixin" virtual="true">
 				<Anchors>
-					<Anchor point="TOPLEFT" />
+					<Anchor point="TOPLEFT" x="0" y="-30" />
 					<Anchor point="BOTTOMRIGHT" />
 				</Anchors>
 				<Frames>

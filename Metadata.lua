@@ -203,6 +203,11 @@ Metadata.Defaults = {
 		usable      = true,
 		purchasable = true,
 	},
+	Filters = {
+		available  = true,
+		collectable = true,
+		usable     = true,
+	},
 	WindowWidth = 800,
 }
 
@@ -225,7 +230,7 @@ end
 -- AceConfig Options table used to display a panel.
 Metadata.Options = {
 	type = "group",
-	name = format(L["OPTIONS_TITLE_MAIN"], Metadata.FriendlyName) .. "     |cFFAAAAAA@project-version@",
+	name = format(L["OPTIONS_TITLE_MAIN"], Metadata.FriendlyName) .. "     |cFFAAAAAA11.2.5.0",
 	args = {
 		TabDefault = {
 			name = format(L["OPTIONS_TITLE_TAB_DEFAULT"], Metadata.FriendlyName),

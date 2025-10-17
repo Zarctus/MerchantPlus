@@ -51,3 +51,7 @@ L["OPTIONS_TITLE_COLUMN_OPTIONS"] = "Column Options"
 L["OPTIONS_TITLE_COLUMN_ITEM_SHOW_STACK"] = "Show stack size"
 
 L["ERROR_FALSE_COLLECTABLE_PET"] = "%s (%d) on this merchant is mislabeled as a pet. Please report this issue via %s"
+
+L["FILTER_TOOLTIP_AVAILABLE"] = "Show only items you can purchase right now."
+L["FILTER_TOOLTIP_COLLECTABLE"] = "Show only items you can add to your collection."
+L["FILTER_TOOLTIP_USABLE"] = "Show only items that this character can use or learn."

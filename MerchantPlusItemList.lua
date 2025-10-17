@@ -104,10 +104,22 @@ function MerchantPlusItemListMixin:RefreshScrollFrame()
 		return
 	end
 
+	local data = {}
+	local hasSort = self.Sort ~= nil
+	local hasDataProvider = self.GetData ~= nil
 	local count = self.GetDataCount and self:GetDataCount() or 0
-	if count > 0 and self.GetData and self.Sort then
+
+	if hasDataProvider and hasSort and count > 0 then
+		data = self:GetData() or {}
+	end
+
+	if Shared.Addon and Shared.Addon.FilterItems then
+		data = Shared.Addon:FilterItems(data)
+	end
+
+	if #data > 0 then
 		self.ResultsText:Hide()
-		local dataProvider = CreateDataProvider(self:GetData())
+		local dataProvider = CreateDataProvider(data)
 		self.ScrollBox:SetDataProvider(dataProvider, ScrollBoxConstants.RetainScrollPosition)
 		self.ScrollBox:GetDataProvider():SetSortComparator(function(lhs, rhs)
 			return self:Sort(lhs, rhs)

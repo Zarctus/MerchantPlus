@@ -36,6 +36,214 @@ local function trace(...)
 end
 Shared.Trace = trace
 
+local L = Shared.Locale
+
+-- Filter configuration shown in the Merchant Plus frame
+Addon.FilterConfig = {
+	available = {
+		label = L["Available"],
+		tooltip = L["FILTER_TOOLTIP_AVAILABLE"],
+		predicate = function(item)
+			return item.isPurchasable == true
+		end,
+	},
+	collectable = {
+		label = L["Collectable"],
+		tooltip = L["FILTER_TOOLTIP_COLLECTABLE"],
+		predicate = function(item)
+			return item.collectable == Metadata.CollectableState.Collectable
+		end,
+	},
+	usable = {
+		label = L["Usable"],
+		tooltip = L["FILTER_TOOLTIP_USABLE"],
+		predicate = function(item)
+			return item.isUsable == true
+		end,
+	},
+}
+
+Addon.FilterButtons = {}
+Addon.FilterOrder = { "usable", "collectable", "available" }
+
+MerchantPlusFilterBarMixin = {}
+
+function MerchantPlusFilterBarMixin:OnLoad()
+	Shared.Addon:RegisterFilterBar(self)
+end
+
+MerchantPlusFilterButtonMixin = {}
+
+function MerchantPlusFilterButtonMixin:OnLoad()
+	if not self.Text then
+		return
+	end
+	self:SetSize(20, 20)
+	self.Text:SetFontObject(GameFontNormalSmall)
+	self.Text:ClearAllPoints()
+	self.Text:SetPoint("LEFT", self, "RIGHT", 6, 0)
+	Shared.Addon:ConfigureFilterButton(self)
+	Shared.Addon:RegisterFilterButton(self)
+end
+
+function MerchantPlusFilterButtonMixin:OnClick()
+	if not self.filterKey then
+		return
+	end
+	Shared.Addon:SetFilter(self.filterKey, self:GetChecked())
+end
+
+function MerchantPlusFilterButtonMixin:OnEnter()
+	local addon = Shared.Addon
+	if not addon or not self.filterKey then
+		return
+	end
+	local config = addon.FilterConfig[self.filterKey]
+	if config and config.tooltip then
+		GameTooltip:SetOwner(self, "ANCHOR_TOP")
+		GameTooltip:SetText(config.tooltip, 1, 1, 1, true)
+		GameTooltip:Show()
+	end
+end
+
+function MerchantPlusFilterButtonMixin:OnLeave()
+	if GameTooltip:IsOwned(self) then
+		GameTooltip:Hide()
+	end
+end
+
+function Addon:ConfigureFilterButton(button)
+	if not button or not button.Text then
+		return
+	end
+	local config = self.FilterConfig[button.filterKey] or {}
+	local label = config.label or button.filterKey or ""
+	button.Text:SetText(label)
+	local width = button.Text:GetStringWidth() or 0
+	local pad = 6
+	button.baseWidth = 20
+	button.textWidth = width
+	button.totalWidth = button.baseWidth + pad + width
+	button:SetHitRectInsets(-pad, -(width + pad), 0, 0)
+end
+
+function Addon:RegisterFilterButton(button)
+	if not button or not button.filterKey then
+		return
+	end
+	self.FilterButtons[button.filterKey] = button
+	self:SyncFilterButton(button.filterKey)
+	self:LayoutFilterButtons()
+end
+
+function Addon:SyncFilterButton(key)
+	local button = self.FilterButtons[key]
+	if not button then
+		return
+	end
+	local enabled = self:IsFilterEnabled(key)
+	button:SetChecked(enabled)
+	self:ConfigureFilterButton(button)
+end
+
+function Addon:SyncFilterButtons()
+	for key in pairs(self.FilterConfig) do
+		self:SyncFilterButton(key)
+	end
+	self:LayoutFilterButtons()
+end
+
+function Addon:IsFilterEnabled(key)
+	local settings = _G[AddonName]
+	if settings and settings.Filters and settings.Filters[key] ~= nil then
+		return settings.Filters[key]
+	end
+	local defaults = Metadata.Defaults and Metadata.Defaults.Filters
+	if defaults and defaults[key] ~= nil then
+		return defaults[key]
+	end
+	return true
+end
+
+function Addon:SetFilter(key, enabled)
+	local settings = _G[AddonName]
+	if not settings then
+		_G[AddonName] = {}
+		settings = _G[AddonName]
+	end
+	settings.Filters = settings.Filters or {}
+	local newValue = not not enabled
+	if settings.Filters[key] == newValue then
+		self:SyncFilterButton(key)
+		return
+	end
+	settings.Filters[key] = newValue
+	self:SyncFilterButton(key)
+	if MerchantPlusItemList and MerchantPlusItemList.RefreshScrollFrame then
+		MerchantPlusItemList:RefreshScrollFrame()
+	end
+end
+
+function Addon:RegisterFilterBar(bar)
+	self.FilterBar = bar
+	self:LayoutFilterButtons()
+end
+
+function Addon:LayoutFilterButtons()
+	local bar = self.FilterBar
+	if not bar then
+		return
+	end
+
+	local spacing = 10
+	local offset = 0
+	for _, key in ipairs(self.FilterOrder) do
+		local button = self.FilterButtons[key]
+		if button then
+			button:ClearAllPoints()
+			local textWidth = button.textWidth or (button.Text and button.Text:GetStringWidth()) or 0
+			local pad = 6
+			local totalWidth = button.totalWidth or (button.baseWidth or 20) + pad + textWidth
+			button:SetPoint("RIGHT", bar, "RIGHT", -12 - offset - pad - textWidth, 0)
+			offset = offset + totalWidth + spacing
+		end
+	end
+end
+
+function Addon:IsAnyFilterEnabled()
+	for key in pairs(self.FilterConfig) do
+		if self:IsFilterEnabled(key) then
+			return true
+		end
+	end
+	return false
+end
+
+function Addon:FilterItems(items)
+	if type(items) ~= "table" then
+		return {}
+	end
+	if not self:IsAnyFilterEnabled() then
+		return items
+	end
+	local filtered = {}
+	for _, item in ipairs(items) do
+		local include = true
+		for key, config in pairs(self.FilterConfig) do
+			if self:IsFilterEnabled(key) and type(config.predicate) == "function" then
+				if not config.predicate(item) then
+					include = false
+					break
+				end
+			end
+		end
+		if include then
+			table.insert(filtered, item)
+		end
+	end
+	return filtered
+end
+
 local InitialWidth = nil
 local SwitchOnOpen = false
 local BuybackDirty = false
@@ -241,6 +449,8 @@ function Addon:UpdateFrame()
 		-- Set the portrait and name of the frame
 		MerchantFrame:SetTitle(UnitName("npc"))
 		MerchantFrame:SetPortraitToUnit("npc")
+
+		Addon:SyncFilterButtons()
 
 		-- Hide all the buttons from the merchant page
 		MerchantPageText:Hide()
@@ -449,6 +659,13 @@ function Addon:HandleEvent(event, target)
 			_G[AddonName] = {}
 		end
 		trace("called: ADDON_LOADED")
+		if not _G[AddonName].Filters then
+			_G[AddonName].Filters = {}
+			local defaults = Metadata.Defaults and Metadata.Defaults.Filters or {}
+			for key, value in pairs(defaults) do
+				_G[AddonName].Filters[key] = value
+			end
+		end
 		-- Don't register options unless they're defined.
 		if Metadata.Options then
 			Metadata.Options.get = Addon.GetAceOption
@@ -468,6 +685,8 @@ function Addon:HandleEvent(event, target)
 			Addon.ElvUISkin = Addon.ElvUI:GetModule('Skins')
 			Addon.ElvUISkin:AddCallbackForAddon('MerchantPlus', 'Merchant Plus', Addon.ElvUILoad)
 		end
+
+		Addon:SyncFilterButtons()
 	end
 end
 

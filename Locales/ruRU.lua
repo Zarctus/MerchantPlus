@@ -44,3 +44,7 @@ L["OPTIONS_TITLE_MAIN"] = "%s Основные параметры"
 L["OPTIONS_TITLE_SORT_REMEMBER"] = "Запомнить порядок сортировки"
 L["OPTIONS_TITLE_TAB_DEFAULT"] = "Показывать вкладку %s по умолчанию"
 L["OPTIONS_TITLE_WINDOW_WIDTH"] = "Ширина торгового окна"
+
+L["FILTER_TOOLTIP_AVAILABLE"] = "Show only items you can purchase right now."
+L["FILTER_TOOLTIP_COLLECTABLE"] = "Show only items you can add to your collection."
+L["FILTER_TOOLTIP_USABLE"] = "Show only items that this character can use or learn."
