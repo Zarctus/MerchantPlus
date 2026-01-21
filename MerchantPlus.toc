@@ -1,5 +1,5 @@
 ## Interface: 120001, 120000
-## Version: @project-version@
+## Version: 1.2.0
 ## Title: Merchant Plus
 ## Notes: A Modern Scrollable UI for Merchants
 ## Author: Zarctus

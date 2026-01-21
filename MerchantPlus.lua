@@ -101,7 +101,7 @@ function MerchantPlusFilterButtonMixin:OnEnter()
 	local config = addon.FilterConfig[self.filterKey]
 	if config and config.tooltip then
 		GameTooltip:SetOwner(self, "ANCHOR_TOP")
-		GameTooltip:SetText(config.tooltip, 1, 1, 1, true)
+		GameTooltip:SetText(config.tooltip, nil, 1, true)
 		GameTooltip:Show()
 	end
 end
