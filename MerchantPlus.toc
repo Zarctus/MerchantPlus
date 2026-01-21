@@ -1,7 +1,7 @@
 ## Interface: 120001, 120000
 ## Version: 1.2.0
-## Title: Merchant Plus
-## Notes: A Modern Scrollable UI for Merchants
+## Title: Merchant +
+## Notes: Une interface moderne et améliorée pour les marchands dans World of Warcraft
 ## Author: Zarctus
 ## SavedVariables: MerchantPlus
 ## IconAtlas: Cursor_buy_32
