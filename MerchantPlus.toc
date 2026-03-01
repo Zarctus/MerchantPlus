@@ -1,12 +1,20 @@
-## Interface: 120001, 120000
+## Interface: 120001
 ## Version: 1.2.0
-## Title: Merchant +
-## Notes: Une interface moderne et améliorée pour les marchands dans World of Warcraft
-## Author: Zarctus
+## Title: Merchant Plus
+## Notes: A Modern Scrollable UI for Merchants
+## Notes-koKR: 현대적으로 스크롤되는 상인 UI
+## Notes-ruRU: Современный прокручиваемый пользователь интерфейс для торговцев
+## Notes-zhCN: 现代化的滚动式清单商人物品列表。
+## Notes-zhTW: 現代化的滾動式清單商人列表
+## Author: SimGuy, Zarctus
 ## SavedVariables: MerchantPlus
 ## IconAtlas: Cursor_buy_32
 
 ## OptionalDeps: ElvUI
+
+## X-Curse-Project-ID: 852491
+## X-WoWI-ID: 26570
+## X-Wago-ID: XKq99xKy
 
 Libs\Libs.xml
 Locales\Locales.xml
