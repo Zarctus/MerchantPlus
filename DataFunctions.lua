@@ -578,9 +578,11 @@ function Data:Init()
 	trace = Shared.Trace or function() end
 
 	for _, id in pairs(Data.ItemCategories) do
-		Data.ItemCategoriesQueried = Data.ItemCategoriesQueried + 1
-		local item = Item:CreateFromItemID(id)
-		item:ContinueOnItemLoad(Data.FinishItemCategories)
+		if type(id) == "number" then
+			Data.ItemCategoriesQueried = Data.ItemCategoriesQueried + 1
+			local item = Item:CreateFromItemID(id)
+			item:ContinueOnItemLoad(Data.FinishItemCategories)
+		end
 	end
 
 end
